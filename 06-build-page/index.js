@@ -2,6 +2,12 @@ const fs = require('fs');
 const path = require('path/posix');
 
 
+async function makeDir(path) {
+  await fs.promises.rm(path, { recursive: true, force: true });
+  await fs.promises.mkdir(path, {recursive: true});
+}
+
+
 async function cloneDir(source, destination){
   await fs.promises.rm(destination, {recursive: true, force: true});
   await fs.promises.mkdir(destination, {recursive: true});
@@ -35,6 +41,7 @@ async function makeStyle(styles){
 }
 
 async function assemble() {
+  await makeDir(path.join(__dirname, 'project-dist'));
   await cloneDir(path.join(__dirname, 'assets'), path.join(__dirname, 'project-dist', 'assets'));
   await makeStyle(path.join(__dirname, 'styles'));
 }
