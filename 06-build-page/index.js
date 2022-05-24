@@ -42,20 +42,20 @@ async function makeStyle(styles){
 
 async function makeHtml(html) {
   let data = '';
-  let readStream = fs.createReadStream(path.resolve(__dirname, 'template.html'), 'utf-8');
+  let readStream = fs.createReadStream(path.join(__dirname, 'template.html'), 'utf-8');
   let files = await fs.promises.readdir(html, {withFileTypes: true});
 
   readStream.on('data', chunk => data += chunk);
   readStream.on('end', async () => {
     files.forEach(file => {
       if (file.isFile()) {
-        const readFile = fs.createReadStream(path.resolve(__dirname, 'components', file.name), 'utf-8');
+        const readFile = fs.createReadStream(path.join(__dirname, 'components', file.name), 'utf-8');
         let htmlPiece = '';
         const name = file.name.split('.')[0];
         readFile.on('data', chunk => htmlPiece += chunk);
         readFile.on('end', () => {
           data = data.replace(`{{${name}}}`, htmlPiece);
-          const writeFile = fs.createWriteStream(path.resolve(__dirname, 'project-dist', 'index.html'));
+          const writeFile = fs.createWriteStream(path.join(__dirname, 'project-dist', 'index.html'));
           writeFile.write(data);
         });
       }
@@ -66,7 +66,7 @@ async function makeHtml(html) {
 async function assemble() {
   await makeDir(path.join(__dirname, 'project-dist'));
   await cloneDir(path.join(__dirname, 'assets'), path.join(__dirname, 'project-dist', 'assets'));
-  await makeHtml(path.resolve(__dirname, 'components'));
+  await makeHtml(path.join(__dirname, 'components'));
   await makeStyle(path.join(__dirname, 'styles'));
 }
 
