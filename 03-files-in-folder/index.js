@@ -11,7 +11,7 @@ async function readFiles(){
       if(data.isFile()){
         const name = file.name.slice(0, file.name.lastIndexOf('.'));
         const size = `${data.size}b`;
-        const extension = `- ${file.name.slice(file.name.lastIndexOf('.') + 1)} -`;
+        const extension = path.extname(file.name);
         console.log(name, extension, size);
       }
     }
