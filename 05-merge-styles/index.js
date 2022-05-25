@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const styles = path.join(__dirname, 'styles');
-const streamWrite = new fs.createWriteStream(path.join(styles, 'project-dist', 'bundle.css'));
+const streamWrite = fs.createWriteStream(path.join(__dirname, 'project-dist', 'bundle.css'), 'utf-8');
 
 async function makeStyle(){
   let files = await fs.promises.readdir(styles, {withFileTypes:true});
